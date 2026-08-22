@@ -3,16 +3,12 @@ import { SECTIONS, TOTAL_QUESTIONS } from "./data/briefing";
 import {
   buildMarkdown,
   clearDraft,
-  clearLogo,
   copyText,
   defaultAnswers,
-  detectBundledLogo,
   downloadMarkdown,
   loadDraft,
-  loadLogo,
   overallStats,
   saveDraft,
-  saveLogo,
   validateContact,
 } from "./lib/engine";
 import type { Answers, Section, ToastMsg } from "./lib/types";
@@ -28,7 +24,6 @@ import {
   IcDot,
   IcReset,
   IcSend,
-  Logo,
   Modal,
   ToastHost,
 } from "./components/primitives";
@@ -89,23 +84,10 @@ export default function App() {
   const [elapsed, setElapsed] = useState("—");
   const [markdown, setMarkdown] = useState("");
   const [finalStats, setFinalStats] = useState({ answered: 0, total: TOTAL_QUESTIONS, pct: 0 });
-  const [customLogo, setCustomLogo] = useState<string | null>(() => loadLogo());
-  const [bundledLogo, setBundledLogo] = useState<string | null>(null);
 
   const draft = useMemo(() => loadDraft(), []);
   const draftStats = useMemo(() => (draft ? overallStats(draft.answers) : null), [draft]);
   const hasDraft = Boolean(draft && draftStats && draftStats.answered > 0);
-  const effectiveLogo = customLogo ?? bundledLogo;
-
-  useEffect(() => {
-    let on = true;
-    detectBundledLogo().then((src) => {
-      if (on) setBundledLogo(src);
-    });
-    return () => {
-      on = false;
-    };
-  }, []);
 
   const pushToast = useCallback((msg: string, tone: ToastMsg["tone"] = "ok") => {
     const id = Date.now() + Math.random();
@@ -185,28 +167,6 @@ export default function App() {
     }
   };
 
-  const uploadLogo = (file: File) => {
-    if (file.size > 1.5 * 1024 * 1024) {
-      pushToast("Ficheiro demasiado grande — máximo 1,5 MB", "warn");
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      const url = String(reader.result);
-      saveLogo(url);
-      setCustomLogo(url);
-      pushToast("Logotipo aplicado — guardado neste navegador", "ok");
-    };
-    reader.onerror = () => pushToast("Não foi possível ler o ficheiro", "warn");
-    reader.readAsDataURL(file);
-  };
-
-  const resetLogo = () => {
-    clearLogo();
-    setCustomLogo(null);
-    pushToast("Monograma RB·360 reposto", "info");
-  };
-
   const restart = () => {
     clearDraft();
     setAnswers(defaultAnswers());
@@ -247,15 +207,7 @@ export default function App() {
   return (
     <div className="min-h-screen">
       {screen === "cover" && (
-        <Cover
-          hasDraft={hasDraft}
-          draftPct={draftStats?.pct ?? 0}
-          onStart={start}
-          logoSrc={effectiveLogo}
-          hasCustomLogo={Boolean(customLogo)}
-          onUploadLogo={uploadLogo}
-          onResetLogo={resetLogo}
-        />
+        <Cover hasDraft={hasDraft} draftPct={draftStats?.pct ?? 0} onStart={start} />
       )}
 
       {screen === "form" && (
@@ -263,16 +215,9 @@ export default function App() {
           {/* top bar */}
           <header className="sticky top-0 z-50 border-b-2 border-gold bg-pine text-paper">
             <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-2.5 md:px-8">
-              <button
-                onClick={() => setScreen("cover")}
-                className="flex items-center transition-opacity hover:opacity-80"
-                title="Voltar à capa"
-              >
-                <Logo size={30} dark src={effectiveLogo} />
-                <span className="ml-3 hidden border-l-2 border-paper/15 pl-3 font-mono text-[9px] uppercase tracking-[0.22em] text-paper/45 sm:block">
-                  briefing interativo
-                </span>
-              </button>
+              <span className="font-mono text-[9px] font-bold uppercase tracking-[0.24em] text-paper/45">
+                Briefing interativo de rebranding
+              </span>
               <div className="ml-auto flex items-center gap-3 md:gap-5">
                 <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-paper/60">
                   <IcDot size={8} className={savedAt ? "animate-blink text-gold" : "text-paper/30"} />
@@ -361,7 +306,6 @@ export default function App() {
           answered={finalStats.answered}
           total={finalStats.total}
           elapsed={elapsed}
-          logoSrc={effectiveLogo}
           onDownload={() => {
             downloadMarkdown(markdown);
             pushToast("briefing-rebranding-360.md descarregado", "ok");

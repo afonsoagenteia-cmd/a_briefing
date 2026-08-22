@@ -1,6 +1,5 @@
-import { useRef } from "react";
 import { TOTAL_QUESTIONS, SECTIONS, MARQUEE_ITEMS } from "../data/briefing";
-import { Dial, HardButton, IcArrowR, IcDot, IcEdit, IcSpark, IcX, Logo, Marquee, Stamp } from "./primitives";
+import { Dial, HardButton, IcArrowR, IcDot, IcSpark, Marquee, Stamp } from "./primitives";
 
 const HOWTO = [
   {
@@ -29,66 +28,16 @@ export function Cover({
   hasDraft,
   draftPct,
   onStart,
-  logoSrc,
-  hasCustomLogo,
-  onUploadLogo,
-  onResetLogo,
 }: {
   hasDraft: boolean;
   draftPct: number;
   onStart: (fresh: boolean) => void;
-  logoSrc: string | null;
-  hasCustomLogo: boolean;
-  onUploadLogo: (file: File) => void;
-  onResetLogo: () => void;
 }) {
-  const fileRef = useRef<HTMLInputElement>(null);
   return (
     <div className="min-h-screen">
       <Marquee items={MARQUEE_ITEMS} />
 
       <div className="mx-auto max-w-6xl px-5 md:px-8">
-        {/* top strip */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-ink/12 py-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <Logo size={44} caption src={logoSrc} />
-            <span className="hidden rounded-md border-2 border-ink/15 bg-card px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-ink/45 xl:inline">
-              ficha de briefing · v.2026
-            </span>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/png,image/jpeg,image/svg+xml,image/webp,image/gif"
-              className="hidden"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) onUploadLogo(f);
-                e.currentTarget.value = "";
-              }}
-            />
-            <button
-              onClick={() => fileRef.current?.click()}
-              title="Substituir o monograma pelo teu logotipo (fica guardado neste navegador)"
-              className="group flex items-center gap-1.5 rounded-md border-2 border-dashed border-ink/30 px-2.5 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-ink/55 transition-all hover:-translate-y-0.5 hover:border-gold hover:bg-goldsoft hover:text-ink"
-            >
-              <IcEdit size={11} className="transition-transform group-hover:-rotate-12" />
-              {hasCustomLogo ? "trocar logo" : "o teu logo"}
-            </button>
-            {hasCustomLogo && (
-              <button
-                onClick={onResetLogo}
-                title="Repor o monograma RB·360"
-                className="flex items-center rounded-md border-2 border-ink/15 px-1.5 py-1.5 text-ink/45 transition-colors hover:border-flame hover:text-flame animate-pop"
-              >
-                <IcX size={11} />
-              </button>
-            )}
-          </div>
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/45">
-            Luanda · AO — Kz · PT-PT
-          </span>
-        </div>
-
         {/* masthead */}
         <div className="grid items-center gap-12 py-12 md:py-16 lg:grid-cols-[1.35fr_1fr]">
           <div className="animate-rise">
@@ -170,7 +119,6 @@ export function Cover({
 
       <footer className="border-t-2 border-ink bg-ink py-5 text-paper">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 md:px-8">
-          <Logo size={26} dark src={logoSrc} />
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-paper/55">
             Briefing interativo de rebranding
           </span>

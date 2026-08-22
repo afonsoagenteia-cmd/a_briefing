@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import confetti from "canvas-confetti";
-import { Dial, HardButton, IcCheck, IcCopy, IcDownload, IcMail, IcReset, IcWhatsApp, Logo, Stamp } from "./primitives";
+import { Dial, HardButton, IcCheck, IcCopy, IcDownload, IcMail, IcReset, IcWhatsApp, Stamp } from "./primitives";
 
 export function Success({
   pct,
   answered,
   total,
   elapsed,
-  logoSrc,
   onDownload,
   onCopy,
   onWhatsApp,
@@ -18,7 +17,6 @@ export function Success({
   answered: number;
   total: number;
   elapsed: string;
-  logoSrc: string | null;
   onDownload: () => void;
   onCopy: () => void;
   onWhatsApp: () => void;
@@ -126,7 +124,6 @@ export function Success({
       </div>
 
       <footer className="flex flex-col items-center gap-2 border-t-2 border-ink/12 py-6">
-        <Logo size={28} src={logoSrc} />
         <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40">
           do diagnóstico às métricas — boa sorte com o lançamento ✳
         </span>

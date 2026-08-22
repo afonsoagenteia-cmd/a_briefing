@@ -8,7 +8,6 @@ import type {
 } from "./types";
 
 const DRAFT_KEY = "rb360-draft-v1";
-const LOGO_KEY = "rb360-logo-v1";
 
 /* ---------------- defaults ---------------- */
 
@@ -151,54 +150,6 @@ export function clearDraft() {
   } catch {
     /* noop */
   }
-}
-
-/* ---------------- custom logo ---------------- */
-
-export function loadLogo(): string | null {
-  try {
-    return localStorage.getItem(LOGO_KEY);
-  } catch {
-    return null;
-  }
-}
-
-export function saveLogo(dataUrl: string) {
-  try {
-    localStorage.setItem(LOGO_KEY, dataUrl);
-  } catch {
-    /* quota */
-  }
-}
-
-export function clearLogo() {
-  try {
-    localStorage.removeItem(LOGO_KEY);
-  } catch {
-    /* noop */
-  }
-}
-
-const BUNDLED_LOGO_CANDIDATES = ["/logo.png", "/logo.svg", "/logo.jpg", "/logo.webp"];
-
-/**
- * Deteta um logotipo colocado na pasta public/ do projeto
- * (logo.png, logo.svg, logo.jpg ou logo.webp). Esse logo é
- * incluído no build e visto por todos os visitantes.
- */
-export function detectBundledLogo(): Promise<string | null> {
-  return new Promise((resolve) => {
-    let i = 0;
-    const next = () => {
-      if (i >= BUNDLED_LOGO_CANDIDATES.length) return resolve(null);
-      const src = BUNDLED_LOGO_CANDIDATES[i++];
-      const img = new Image();
-      img.onload = () => resolve(src);
-      img.onerror = next;
-      img.src = src;
-    };
-    next();
-  });
 }
 
 /* ---------------- export ---------------- */
