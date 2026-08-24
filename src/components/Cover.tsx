@@ -1,5 +1,5 @@
 import { TOTAL_QUESTIONS, SECTIONS, MARQUEE_ITEMS } from "../data/briefing";
-import { Dial, HardButton, IcArrowR, IcDot, IcSpark, Marquee, Stamp } from "./primitives";
+import { Dial, HardButton, IcAlert, IcArrowR, IcDot, IcGem, IcLock, Marquee, Stamp } from "./primitives";
 
 const HOWTO = [
   {
@@ -41,32 +41,57 @@ export function Cover({
         {/* masthead */}
         <div className="grid items-center gap-12 py-12 md:py-16 lg:grid-cols-[1.35fr_1fr]">
           <div className="animate-rise">
-            <p className="mb-5 flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-leaf">
-              <IcSpark size={12} /> Diagnóstico → Estratégia → Lançamento
-            </p>
             <h1 className="font-display font-extrabold leading-[0.94] tracking-tight">
-              <span className="block text-[clamp(2.9rem,8.5vw,6.2rem)]">Rebranding</span>
-              <span className="mt-2 inline-block -rotate-2 rounded-xl border-2 border-ink bg-gold px-4 pb-1 pr-5 text-[#f4f7ff] text-[clamp(2.9rem,8.5vw,6.2rem)] shadow-hard">
-                360º
+              <span className="block text-[clamp(2.5rem,7vw,5.2rem)]">Antes de</span>
+              <span className="mt-2 inline-block -rotate-2 rounded-xl border-2 border-ink bg-gold px-4 pb-1 pr-5 text-[#f4f7ff] text-[clamp(2.5rem,7vw,5.2rem)] shadow-hard">
+                começarmos
               </span>
             </h1>
             <p className="mt-7 max-w-xl text-base leading-relaxed text-ink/70 md:text-lg">
-              Uma ficha guiada para tirar a marca da cabeça e pô-la no papel: motivação, mercado,
-              posicionamento, tom de voz, canais, experiência interna e métricas de sucesso —
-              tudo num só documento, pronto a virar estratégia.
+              Leia com atenção as informações abaixo para aproveitar ao máximo este briefing.
             </p>
 
-            <div className="mt-7 flex flex-wrap gap-2">
-              {[`${SECTIONS.length} secções`, `${TOTAL_QUESTIONS} perguntas`, "±15 min", "autosave local"].map((c) => (
-                <span key={c} className="rounded-md border-2 border-ink/15 bg-card px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-ink/65">
-                  {c}
+            <ul className="stagger mt-8 max-w-xl space-y-4">
+              <li className="group flex gap-4 transition-transform duration-200 hover:-translate-y-0.5">
+                <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-ink bg-goldsoft text-ink shadow-hard-sm transition-transform duration-200 group-hover:-rotate-6">
+                  <IcAlert size={17} />
                 </span>
-              ))}
-            </div>
+                <p className="text-[15px] leading-relaxed text-ink/75">
+                  <span className="mb-0.5 block font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink/45">
+                    A base do projeto
+                  </span>
+                  É importante que responda cada questão com atenção — serão a base de toda a
+                  identidade visual que vamos desenvolver juntos.
+                </p>
+              </li>
+              <li className="group flex gap-4 transition-transform duration-200 hover:-translate-y-0.5">
+                <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-ink bg-mint text-ink shadow-hard-sm transition-transform duration-200 group-hover:-rotate-6">
+                  <IcLock size={17} />
+                </span>
+                <p className="text-[15px] leading-relaxed text-ink/75">
+                  <span className="mb-0.5 block font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink/45">
+                    Confidencialidade
+                  </span>
+                  As suas respostas são confidenciais e não serão partilhadas com terceiros.
+                </p>
+              </li>
+              <li className="group flex gap-4 transition-transform duration-200 hover:-translate-y-0.5">
+                <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-ink bg-flamesoft text-ink shadow-hard-sm transition-transform duration-200 group-hover:-rotate-6">
+                  <IcGem size={17} />
+                </span>
+                <p className="text-[15px] leading-relaxed text-ink/75">
+                  <span className="mb-0.5 block font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink/45">
+                    O que ganha
+                  </span>
+                  Este briefing permite-me entender bem a sua marca e desenvolver uma identidade
+                  visual forte, autêntica e de grande valor.
+                </p>
+              </li>
+            </ul>
 
             <div className="mt-9 flex flex-wrap items-center gap-4">
               <HardButton variant="gold" className="px-7 py-3.5 text-base" onClick={() => onStart(false)}>
-                Começar briefing <IcArrowR size={16} />
+                Iniciar briefing <IcArrowR size={16} />
               </HardButton>
               {hasDraft && (
                 <button
@@ -77,18 +102,28 @@ export function Cover({
                 </button>
               )}
             </div>
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-ink/55">
+              Não é necessário responder todas as perguntas. Mas quanto mais detalhes, melhor o resultado.
+            </p>
             {hasDraft && (
               <p className="mt-3 flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-wide text-leaf animate-pop">
-                <IcDot size={8} className="animate-blink" /> Rascunho encontrado — retomas aos {draftPct}%
+                <IcDot size={8} className="animate-blink" /> Rascunho encontrado — retoma aos {draftPct}%
               </p>
             )}
           </div>
 
-          {/* dial + stamp */}
-          <div className="relative hidden items-center justify-center lg:flex" aria-hidden="true">
+          {/* dial + stamp + stats */}
+          <div className="relative hidden flex-col items-center justify-center gap-7 lg:flex">
             <div className="relative">
               <Dial value={hasDraft ? draftPct : 0} size={230} label={hasDraft ? "do rascunho" : "pronto a iniciar"} />
               <Stamp className="absolute -right-10 -top-8 h-28 w-28 text-ink/70" />
+            </div>
+            <div className="flex max-w-[280px] flex-wrap justify-center gap-2">
+              {[`${SECTIONS.length} secções`, `${TOTAL_QUESTIONS} perguntas`, "±15 min", "autosave local"].map((c) => (
+                <span key={c} className="rounded-md border-2 border-ink/15 bg-card px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-ink/65">
+                  {c}
+                </span>
+              ))}
             </div>
           </div>
         </div>

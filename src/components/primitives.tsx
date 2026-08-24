@@ -95,6 +95,18 @@ export const IcDot = (p: IP) => (
     <circle cx="12" cy="12" r="6" />
   </svg>
 );
+export const IcLock = (p: IP) => (
+  <svg {...base(p)}>
+    <rect x="5" y="11" width="14" height="9" rx="2" />
+    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+  </svg>
+);
+export const IcGem = (p: IP) => (
+  <svg {...base(p)}>
+    <path d="M7 3h10l4 6-9 12L3 9l4-6z" />
+    <path d="M3 9h18M12 21L8 9l4-6 4 6-4 12" />
+  </svg>
+);
 export const IcWhatsApp = (p: IP) => (
   <svg {...base(p)}>
     <path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1 1 21 11.5z" />
